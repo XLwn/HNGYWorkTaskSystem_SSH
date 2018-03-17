@@ -5,6 +5,7 @@ import com.xl.dao.MainDao;
 import com.xl.dao.MainDaoImpl;
 import com.xl.entity.THngyWorkTask;
 import com.xl.service.AdminService;
+import com.xl.utils.Config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,10 +44,12 @@ public class AdminAjaxController {
     @PostMapping(value = "/modifyAdminInfo")
     @ResponseBody
     public String modifyAdminInfo(HttpSession session, String email, String qq, String pwd) {
-        String id = String.valueOf(session.getAttribute("id"));
-        System.out.println("管理员修改信息" + id + " / " + email + " / " + qq + " / " + pwd);
-        MainDao dao = new MainDaoImpl();
-        return dao.modifyAdminInfo(id, email, qq, pwd);
+        String code = Config.Code201;
+        if(email.length()>0&&qq.length()>0){
+            String id = String.valueOf(session.getAttribute("id"));
+            code = adminService.updateAdminInfo(id,email,qq,pwd);
+        }
+        return  code;
     }
 
     /**

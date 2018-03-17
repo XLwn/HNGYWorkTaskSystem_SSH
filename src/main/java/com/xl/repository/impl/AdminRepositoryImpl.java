@@ -55,6 +55,6 @@ public class AdminRepositoryImpl implements AdminRepository {
 
     @Override
     public void flush() {
-
+        getSession().flush();
     }
 }

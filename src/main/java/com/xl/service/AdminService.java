@@ -20,5 +20,5 @@ public interface AdminService {
      * @param id 管理员基本信息
      * @return 返回CONFIG类中的状态码
      */
-    String modifyAdminInfo(String id,String email, String qq, String pwd);
+    String updateAdminInfo(String id,String email, String qq, String pwd);
 }

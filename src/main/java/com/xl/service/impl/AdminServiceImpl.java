@@ -33,10 +33,7 @@ public class AdminServiceImpl implements AdminService {
         THngyAdminInfo admin = adminRepository.get(Long.parseLong(id));
         String hql = "from THngyNotice";
         List<THngyNotice> list = mainRepository.getSession().createQuery(hql).list();
-        THngyNotice notice = list.get(list.size());
-//        asfda
-//        asfda
-//        asfda
+        THngyNotice notice = list.get(list.size() - 1);
         if (admin != null && notice != null) {
             Map map = new HashMap();
             map.put("adminName", admin.getAdminInfoName());
@@ -64,11 +61,11 @@ public class AdminServiceImpl implements AdminService {
         java.sql.Date date2 = java.sql.Date.valueOf(format.format(c.getTime()));
         c.add(Calendar.MONTH, -1);
         java.sql.Date date1 = java.sql.Date.valueOf(format.format(c.getTime()));
-        System.out.println(date1.toString()+"\n"+date2.toString());
+        System.out.println(date1.toString() + "\n" + date2.toString());
 
         String hql = "select work.workTaskId,work.workTaskTime,work.workTaskName,teacher.teacherName,work.workTaskSchedule,teacher.teacherId,work.qq,work.workTaskText from THngyWorkTask as work ,THngyLink as link,THngyTeacherInfo as teacher where link.workTaskId = work.workTaskId and link.teacherId = teacher.teacherId and work.workTaskTime>=? and work.workTaskTime<=? order by work.workTaskTime desc";
-        List<Map<String, Object>> list = MainUtil.getWorkInfoUtil(mainRepository.getSession().createQuery(hql).setParameter(0,date1).setParameter(1,date2).list());
-        if (list.size()>0){
+        List<Map<String, Object>> list = MainUtil.getWorkInfoUtil(mainRepository.getSession().createQuery(hql).setParameter(0, date1).setParameter(1, date2).list());
+        if (list.size() > 0) {
             json = JSONArray.toJSONString(list);
         }
         return json;
@@ -80,10 +77,17 @@ public class AdminServiceImpl implements AdminService {
      * @param id    管理员基本信息
      * @param email
      * @param qq
-     * @param pwd   @return 返回CONFIG类中的状态码
+     * @param pwd
+     * @return 返回CONFIG类中的状态码
      */
     @Override
-    public String modifyAdminInfo(String id, String email, String qq, String pwd) {
-        return null;
+    public String updateAdminInfo(String id, String email, String qq, String pwd) {
+        THngyAdminInfo admin = adminRepository.get(Long.parseLong(id));
+        admin.setAdminInfoEmail(email);
+        admin.setAdminInfoQq(qq);
+        if (pwd.length() > 6)
+            admin.setAdminInfoPassWord(pwd);
+        adminRepository.saveOrUpdate(admin);
+        return Config.Code200;
     }
 }
