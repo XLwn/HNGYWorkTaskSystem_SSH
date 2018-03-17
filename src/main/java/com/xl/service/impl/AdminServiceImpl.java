@@ -31,7 +31,9 @@ public class AdminServiceImpl implements AdminService {
     public String getAdminHomePageInfo(String id) {
         String json = Config.Code101;
         THngyAdminInfo admin = adminRepository.get(Long.parseLong(id));
-        THngyNotice notice = mainRepository.getSession().get(THngyNotice.class, (long) 1000);
+        String hql = "from THngyNotice";
+        List<THngyNotice> list = mainRepository.getSession().createQuery(hql).list();
+        THngyNotice notice = list.get(list.size());
         if (admin != null && notice != null) {
             Map map = new HashMap();
             map.put("adminName", admin.getAdminInfoName());
