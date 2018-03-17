@@ -34,6 +34,7 @@ public class AdminServiceImpl implements AdminService {
         String hql = "from THngyNotice";
         List<THngyNotice> list = mainRepository.getSession().createQuery(hql).list();
         THngyNotice notice = list.get(list.size());
+//        asfda
         if (admin != null && notice != null) {
             Map map = new HashMap();
             map.put("adminName", admin.getAdminInfoName());
