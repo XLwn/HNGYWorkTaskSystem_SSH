@@ -2,19 +2,24 @@ package com.xl.controller;
 
 import com.xl.dao.MainDao;
 import com.xl.dao.MainDaoImpl;
+import com.xl.entity.THngyImportInfo;
 import com.xl.utils.ExcelUtil;
+import jxl.Workbook;
+import jxl.read.biff.BiffException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 public class AdminController {
@@ -166,6 +171,110 @@ public class AdminController {
         return null;
     }
 
+
+    /**
+     * Excel批量注册
+     * NOTE:THngyImportInfo 为教师用户信息实体类，追加字符段需要修改此实体类
+     * 并需要在 选择插入判断 处对应修改
+     *
+     * @param request
+     * @param response
+     * @param loginName
+     * @throws ServletException
+     * @throws IOException
+     */
+    @RequestMapping("fileupload")
+    public void fileupload(HttpServletRequest request, HttpServletResponse response, String loginName) throws
+            ServletException, IOException {
+//        上传文件的全路径
+        String loaclPath = "";
+
+        String path = request.getSession().getServletContext().getRealPath("") + "\\upload\\record\\";
+        System.out.println(path);
+        CommonsMultipartResolver resolver = new CommonsMultipartResolver(request.getSession().getServletContext());
+        if (resolver.isMultipart(request)) {
+            MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) (request);
+            Iterator<String> it = multipartHttpServletRequest.getFileNames();
+            while (it.hasNext()) {
+                MultipartFile file = multipartHttpServletRequest.getFile(it.next());
+                String fileName = file.getOriginalFilename();
+                loaclPath = path + fileName;
+                System.out.println(loaclPath);
+                File newFile = new File(loaclPath);
+                file.transferTo(newFile);
+            }
+        }
+
+        String errMessage = null;
+        boolean flags = false;
+
+        List<THngyImportInfo> Info_Import = new LinkedList<THngyImportInfo>();
+        java.io.File f = new java.io.File(loaclPath);
+        InputStream is = new FileInputStream(f);
+        try {
+            Workbook wb = Workbook.getWorkbook(is);
+            jxl.Sheet sheet = wb.getSheet(0);
+            String centent = null;
+            for (int i = 0; i < sheet.getRows(); i++) {
+                THngyImportInfo info = new THngyImportInfo();
+                for (int j = 0; j < sheet.getColumns(); j++) {
+                    centent = sheet.getCell(j, i).getContents();
+//                    选择插入判断 开始
+                    if (info.getTeacher_name() == null) {
+                        info.setTeacher_name(centent);
+                    } else if (info.getTeacher_room() == null) {
+                        info.setTeacher_room(centent);
+                    } else if (info.getTeacher_mail() == null) {
+                        info.setTeacher_mail(centent);
+                    } else if (info.getTeacher_phone() == null) {
+                        info.setTeacher_phone(centent);
+                    }
+//                    System.out.print(centent + " ");
+                }
+                Info_Import.add(info);
+//                System.out.println();
+            }
+
+            MainDaoImpl mainDao = new MainDaoImpl();
+
+            for (int i = 0; i < Info_Import.size(); i++ ){
+                System.out.print(Info_Import.get(i).getTeacher_name()+" ");
+                System.out.print(Info_Import.get(i).getTeacher_room()+" ");
+                System.out.print(Info_Import.get(i).getTeacher_mail()+" ");
+                System.out.println(Info_Import.get(i).getTeacher_phone()+" ");
+            }
+
+
+        } catch (BiffException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /***
+     * Excel批量导入页面
+     *
+     * @param response
+     * @param httpServletRequest
+     * @return
+     */
+    @RequestMapping(value = "/importInfo")
+    public String importInfo(HttpServletResponse response, HttpServletRequest httpServletRequest) {
+
+        if (httpServletRequest.getParameter("type") != null ){
+            String type = httpServletRequest.getParameter("type");
+            if (type.equals("upload")){
+//                String workName = httpServletRequest.getParameter("workName");
+//                String teacher = httpServletRequest.getParameter("teacher");
+//                System.out.println("测试" + workName + " " + teacher);
+
+            }
+        }
+
+
+        httpServletRequest.setAttribute("importInfo", null);
+
+        return "importInfo";
+    }
     @GetMapping(value = "adminquery")
     public String adminquery() {
         return "adminquery";
