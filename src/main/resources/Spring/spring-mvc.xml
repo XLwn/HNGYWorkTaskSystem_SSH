@@ -23,7 +23,7 @@
 
     <!-- UTF-8 -->
     <mvc:annotation-driven>
-        <mvc:message-converters register-defaults="true">
+        <mvc:message-converters>
             <bean class="org.springframework.http.converter.StringHttpMessageConverter">
                 <property name="supportedMediaTypes" value="text/html;charset=UTF-8"/>
             </bean>
@@ -58,25 +58,6 @@
         <property name="resolveLazily" value="true"/>
     </bean>
 
-    <!-- 使用jackjson,默认将返回对象转换为 JSON，如果前面没有在pom文件中添加jackson包的不需要这个配置  -->
-    <bean id="stringConverter"
-          class="org.springframework.http.converter.StringHttpMessageConverter">
-        <property name="supportedMediaTypes">
-            <list>
-                <value>text/plain;charset=UTF-8</value>
-            </list>
-        </property>
-    </bean>
-    <bean id="jsonConverter"
-          class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"></bean>
-    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
-        <property name="messageConverters">
-            <list>
-                <ref bean="stringConverter" />
-                <ref bean="jsonConverter" />
-            </list>
-        </property>
-    </bean>
 
     <!-- 拦截器 -->
     <mvc:interceptors>

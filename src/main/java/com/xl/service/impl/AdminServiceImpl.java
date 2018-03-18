@@ -10,14 +10,17 @@ import com.xl.utils.Config;
 import com.xl.utils.MainUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
 public class AdminServiceImpl implements AdminService {
+
     @Autowired
     private AdminRepository adminRepository;
+
     @Autowired
     private MainRepository mainRepository;
 
@@ -35,7 +38,7 @@ public class AdminServiceImpl implements AdminService {
         List<THngyNotice> list = mainRepository.getSession().createQuery(hql).list();
         THngyNotice notice = list.get(list.size() - 1);
         if (admin != null && notice != null) {
-            Map map = new HashMap();
+            Map<String,Object> map = new HashMap();
             map.put("adminName", admin.getAdminInfoName());
             map.put("adminId", admin.getAdminInfoId());
             map.put("adminEmail", admin.getAdminInfoEmail());
@@ -87,7 +90,7 @@ public class AdminServiceImpl implements AdminService {
         admin.setAdminInfoQq(qq);
         if (pwd.length() > 6)
             admin.setAdminInfoPassWord(pwd);
-        adminRepository.saveOrUpdate(admin);
+        adminRepository.delete((long)1000);
         return Config.Code200;
     }
 }

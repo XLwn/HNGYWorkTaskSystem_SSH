@@ -44,7 +44,6 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-jdbc:4.3.1.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-tx:4.3.1.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-webmvc:4.3.1.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-aop:4.3.1.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-context:4.3.1.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-expression:4.3.1.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-web:4.3.1.RELEASE" level="project" />
@@ -85,6 +84,10 @@
     <orderEntry type="library" name="Maven: org.apache.xmlbeans:xmlbeans:2.6.0" level="project" />
     <orderEntry type="library" name="Maven: stax:stax-api:1.0.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: com.microsoft.sqlserver:sqljdbc4:4.0" level="project" />
-    <orderEntry type="library" name="Maven: net.sourceforge.jexcelapi:jxl:2.6.12" level="project" />
+    <orderEntry type="library" name="Maven: com.mchange:mchange-commons-java:0.2.15" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-aop:5.0.4.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.aspectj:aspectjrt:1.8.13" level="project" />
+    <orderEntry type="library" name="Maven: org.aspectj:aspectjweaver:1.8.13" level="project" />
+    <orderEntry type="library" name="Maven: aopalliance:aopalliance:1.0" level="project" />
   </component>
 </module>

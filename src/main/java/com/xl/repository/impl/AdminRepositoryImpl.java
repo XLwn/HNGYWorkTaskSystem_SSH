@@ -4,6 +4,7 @@ import com.xl.entity.THngyAdminInfo;
 import com.xl.repository.AdminRepository;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -43,14 +44,18 @@ public class AdminRepositoryImpl implements AdminRepository {
         return (long)getSession().save(entity);
     }
 
+
     @Override
     public void saveOrUpdate(THngyAdminInfo entity) {
-        getSession().saveOrUpdate(entity);
+        getSession().update(entity);
     }
 
     @Override
     public void delete(Long id) {
-
+        Session session = this.getSession();
+        Transaction tx = session.beginTransaction();
+        session.delete(session.get(THngyAdminInfo.class,id));
+        tx.commit();
     }
 
     @Override
