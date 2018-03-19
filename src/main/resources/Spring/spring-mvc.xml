@@ -13,17 +13,19 @@
     <context:annotation-config/>
 
     <!-- 自动扫描com.test.controller包，使SpringMVC认为包下用了@controller注解的类是控制器 -->
-    <context:component-scan base-package="com.xl.controller"/>
+    <context:component-scan base-package="com.xl.controller">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
 
 
     <!-- 静态资源(js、image等)的访问 -->
-    <mvc:default-servlet-handler />
+    <mvc:default-servlet-handler/>
     <!-- 配置注解驱动 可以将request参数与绑定到controller参数上 -->
     <mvc:annotation-driven/>
 
     <!-- UTF-8 -->
     <mvc:annotation-driven>
-        <mvc:message-converters>
+        <mvc:message-converters register-defaults="true">
             <bean class="org.springframework.http.converter.StringHttpMessageConverter">
                 <property name="supportedMediaTypes" value="text/html;charset=UTF-8"/>
             </bean>
@@ -35,9 +37,9 @@
         <property name="supportedMediaTypes">
             <list>
                 <bean class="org.springframework.http.MediaType">
-                    <constructor-arg value="text" />
-                    <constructor-arg value="plain" />
-                    <constructor-arg value="UTF-8" />
+                    <constructor-arg value="text"/>
+                    <constructor-arg value="plain"/>
+                    <constructor-arg value="UTF-8"/>
                 </bean>
             </list>
         </property>
@@ -78,5 +80,6 @@
             <bean class="com.xl.interceptor.InterceptedRequestsNotLogin"></bean>
         </mvc:interceptor>
     </mvc:interceptors>
+
 
 </beans>

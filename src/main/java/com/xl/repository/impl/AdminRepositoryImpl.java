@@ -7,6 +7,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,17 +17,17 @@ public class AdminRepositoryImpl implements AdminRepository {
     private SessionFactory sessionFactory;
 
     private Session getSession() {
-        return this.sessionFactory.openSession();
+        return this.sessionFactory.getCurrentSession();
     }
 
     @Override
     public THngyAdminInfo load(Long id) {
-        return getSession().get(THngyAdminInfo.class,id);
+        return getSession().get(THngyAdminInfo.class, id);
     }
 
     @Override
     public THngyAdminInfo get(Long id) {
-        return  getSession().get(THngyAdminInfo.class,id);
+        return getSession().get(THngyAdminInfo.class, id);
     }
 
     @Override
@@ -41,11 +42,12 @@ public class AdminRepositoryImpl implements AdminRepository {
 
     @Override
     public Long save(THngyAdminInfo entity) {
-        return (long)getSession().save(entity);
+        return (long) getSession().save(entity);
     }
 
 
     @Override
+    @Transactional
     public void saveOrUpdate(THngyAdminInfo entity) {
         getSession().update(entity);
     }
@@ -54,7 +56,7 @@ public class AdminRepositoryImpl implements AdminRepository {
     public void delete(Long id) {
         Session session = this.getSession();
         Transaction tx = session.beginTransaction();
-        session.delete(session.get(THngyAdminInfo.class,id));
+        session.delete(session.get(THngyAdminInfo.class, id));
         tx.commit();
     }
 

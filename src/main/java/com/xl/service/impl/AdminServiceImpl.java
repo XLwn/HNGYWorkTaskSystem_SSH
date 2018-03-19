@@ -35,8 +35,8 @@ public class AdminServiceImpl implements AdminService {
         String json = Config.Code101;
         THngyAdminInfo admin = adminRepository.get(Long.parseLong(id));
         String hql = "from THngyNotice";
-        List<THngyNotice> list = mainRepository.getSession().createQuery(hql).list();
-        THngyNotice notice = list.get(list.size() - 1);
+        List<Object> list = mainRepository.simpleQuery(null,hql);
+        THngyNotice notice = (THngyNotice) list.get(list.size() - 1);
         if (admin != null && notice != null) {
             Map<String,Object> map = new HashMap();
             map.put("adminName", admin.getAdminInfoName());
@@ -67,7 +67,7 @@ public class AdminServiceImpl implements AdminService {
         System.out.println(date1.toString() + "\n" + date2.toString());
 
         String hql = "select work.workTaskId,work.workTaskTime,work.workTaskName,teacher.teacherName,work.workTaskSchedule,teacher.teacherId,work.qq,work.workTaskText from THngyWorkTask as work ,THngyLink as link,THngyTeacherInfo as teacher where link.workTaskId = work.workTaskId and link.teacherId = teacher.teacherId and work.workTaskTime>=? and work.workTaskTime<=? order by work.workTaskTime desc";
-        List<Map<String, Object>> list = MainUtil.getWorkInfoUtil(mainRepository.getSession().createQuery(hql).setParameter(0, date1).setParameter(1, date2).list());
+        List<Map<String, Object>> list = MainUtil.getWorkInfoUtil(mainRepository.dateQuery(date1,date2,hql));
         if (list.size() > 0) {
             json = JSONArray.toJSONString(list);
         }
@@ -90,7 +90,7 @@ public class AdminServiceImpl implements AdminService {
         admin.setAdminInfoQq(qq);
         if (pwd.length() > 6)
             admin.setAdminInfoPassWord(pwd);
-        adminRepository.delete((long)1000);
+        adminRepository.saveOrUpdate(admin);
         return Config.Code200;
     }
 }

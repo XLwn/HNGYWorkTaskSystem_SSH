@@ -7,6 +7,7 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Date;
 import java.util.List;
 @Repository
 public class MainRepositoryImpl implements MainRepository{
@@ -16,7 +17,7 @@ public class MainRepositoryImpl implements MainRepository{
 
     @Override
     public Session getSession() {
-        return this.sessionFactory.openSession();
+        return this.sessionFactory.getCurrentSession();
     }
 
     @Override
@@ -36,6 +37,7 @@ public class MainRepositoryImpl implements MainRepository{
     @Override
     public List<Object> simpleQuery(Object[] objects, String hql) {
         Query query = getSession().createQuery(hql);
+        if(objects!=null)
         for (int i = 0; i < objects.length; i++) {
             query.setParameter(i,objects[i]);
         }
@@ -50,5 +52,10 @@ public class MainRepositoryImpl implements MainRepository{
             query.setParameter(i,objects[i]);
         }
         return query.list();
+    }
+
+    @Override
+    public List<Object[]> dateQuery(Date date1, Date date2, String hql) {
+        return getSession().createQuery(hql).setParameter(0,date1).setParameter(1,date2).list();
     }
 }
