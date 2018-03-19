@@ -64,7 +64,6 @@ public class AdminServiceImpl implements AdminService {
         java.sql.Date date2 = java.sql.Date.valueOf(format.format(c.getTime()));
         c.add(Calendar.MONTH, -1);
         java.sql.Date date1 = java.sql.Date.valueOf(format.format(c.getTime()));
-        System.out.println(date1.toString() + "\n" + date2.toString());
 
         String hql = "select work.workTaskId,work.workTaskTime,work.workTaskName,teacher.teacherName,work.workTaskSchedule,teacher.teacherId,work.qq,work.workTaskText from THngyWorkTask as work ,THngyLink as link,THngyTeacherInfo as teacher where link.workTaskId = work.workTaskId and link.teacherId = teacher.teacherId and work.workTaskTime>=? and work.workTaskTime<=? order by work.workTaskTime desc";
         List<Map<String, Object>> list = MainUtil.getWorkInfoUtil(mainRepository.dateQuery(date1,date2,hql));
@@ -104,8 +103,8 @@ public class AdminServiceImpl implements AdminService {
         String code = Config.Code201;
         THngyNotice notice1 = new THngyNotice();
         notice1.setNoticeText(notice);
-        if((long)mainRepository.getSession().save(notice1)>0){
-            code = Config.Code201;
+        if(mainRepository.save(notice1)!=-1){
+            code = Config.Code200;
         }
         return  code;
     }

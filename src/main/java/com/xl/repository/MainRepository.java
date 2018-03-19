@@ -12,4 +12,5 @@ public interface MainRepository {
     List<Object>  simpleQuery(Object[] objects,String hql);
     List<Object[]> complexQuery(Object[] objects,String hql);
     List<Object[]> dateQuery(Date date1,Date date2,String hql);
+    Long save(Object o);
 }

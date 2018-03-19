@@ -58,4 +58,15 @@ public class MainRepositoryImpl implements MainRepository{
     public List<Object[]> dateQuery(Date date1, Date date2, String hql) {
         return getSession().createQuery(hql).setParameter(0,date1).setParameter(1,date2).list();
     }
+
+    @Override
+    public Long save(Object o) {
+        long l = -1;
+        try {
+            l =(long)getSession().save(o);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return l;
+    }
 }
