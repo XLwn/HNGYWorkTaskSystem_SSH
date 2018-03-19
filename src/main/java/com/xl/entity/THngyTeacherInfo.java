@@ -19,6 +19,7 @@ public class THngyTeacherInfo {
     private String spare6;
 
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "Teacher_ID")
     public long getTeacherId() {
         return teacherId;

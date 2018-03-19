@@ -52,6 +52,7 @@ public class MainServiceImpl implements MainService{
      */
     @Override
     public String VerificationLogin(String inputEmail, String inputPassword, String autoLogin, HttpSession httpSession, HttpServletResponse response) {
+        System.out.println("自动登录:"+autoLogin);
         if (inputEmail == null || inputPassword == null)//如果邮箱或密码为空，直接结束
         {
             return null;

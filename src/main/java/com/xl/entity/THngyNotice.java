@@ -13,6 +13,7 @@ public class THngyNotice {
     private String spare4;
 
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "Notice_ID")
     public long getNoticeId() {
         return noticeId;

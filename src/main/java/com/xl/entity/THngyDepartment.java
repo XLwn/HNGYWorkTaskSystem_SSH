@@ -13,6 +13,7 @@ public class THngyDepartment {
     private String spare4;
 
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "Department_ID")
     public long getDepartmentId() {
         return departmentId;

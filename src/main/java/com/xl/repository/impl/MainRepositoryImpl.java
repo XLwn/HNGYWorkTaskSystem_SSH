@@ -46,7 +46,6 @@ public class MainRepositoryImpl implements MainRepository{
 
     @Override
     public List<Object[]> complexQuery(Object[] objects, String hql) {
-        hql ="select count (*) from THngyWorkTask ";
         Query query = getSession().createQuery(hql);
         for (int i = 0; i < objects.length; i++) {
             query.setParameter(i,objects[i]);

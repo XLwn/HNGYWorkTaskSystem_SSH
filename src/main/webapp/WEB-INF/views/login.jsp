@@ -54,7 +54,7 @@
         </div>
         <div class="checkbox">
             <label>
-                <input type="checkbox" value="remember-me"> 记住我的登录信息
+                <input type="checkbox" value="remember-me" id="autoLogin"> 七天之内自动登录
             </label>
         </div>
         <center>
