@@ -15,7 +15,7 @@ public class WorkTaskRepositoryImpl implements WorkTaskRepository{
     private SessionFactory sessionFactory;
 
     private Session getSession(){
-        return this.sessionFactory.openSession();
+        return this.sessionFactory.getCurrentSession();
     }
     @Override
     public THngyWorkTask load(Long id) {

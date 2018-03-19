@@ -16,7 +16,7 @@ public class TeacherRepositoryImpl implements TeacherRepository {
     private SessionFactory sessionFactory;
 
     private Session getSession() {
-        return this.sessionFactory.openSession();
+        return this.sessionFactory.getCurrentSession();
     }
 
     @Override

@@ -21,4 +21,11 @@ public interface AdminService {
      * @return 返回CONFIG类中的状态码
      */
     String updateAdminInfo(String id,String email, String qq, String pwd);
+
+    /***
+     * 修改公告
+     * @param notice 公告内容
+     * @return 返回状态码200成功，201失败
+     */
+    String updateNotice(String notice);
 }

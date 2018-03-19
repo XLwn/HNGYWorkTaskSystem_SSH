@@ -93,4 +93,20 @@ public class AdminServiceImpl implements AdminService {
         adminRepository.saveOrUpdate(admin);
         return Config.Code200;
     }
+
+    /***
+     * 修改公告
+     * @param notice 公告内容
+     * @return 返回状态码200成功，201失败
+     */
+    @Override
+    public String updateNotice(String notice) {
+        String code = Config.Code201;
+        THngyNotice notice1 = new THngyNotice();
+        notice1.setNoticeText(notice);
+        if((long)mainRepository.getSession().save(notice1)>0){
+            code = Config.Code201;
+        }
+        return  code;
+    }
 }

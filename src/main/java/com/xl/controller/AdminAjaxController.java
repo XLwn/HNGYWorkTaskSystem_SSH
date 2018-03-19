@@ -29,9 +29,7 @@ public class AdminAjaxController {
     @RequestMapping(value = "/modifyNotice")
     @ResponseBody
     public String modifyNotice(String notice) {
-        System.out.println(notice);
-        MainDao dao = new MainDaoImpl();
-        return dao.modifyNotice(notice);
+        return adminService.updateNotice(notice);
     }
 
     /***
