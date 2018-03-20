@@ -39,4 +39,12 @@ public interface AdminService {
      * 将List放入request中,前台调用
      */
     void getTeacherWrokStatus(HttpServletRequest req);
+
+    /***
+     * Excel批量注册 教师信息
+     *
+     * @param loaclPath
+     * @return
+     */
+    String importExcelInfo(String loaclPath);
 }

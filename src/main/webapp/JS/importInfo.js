@@ -25,7 +25,6 @@ $(document).ready(function () {
             cancelButtonText: "取消",
         }, function () {
             setTimeout(function () {
-                // doUpload();
                 ajax_task();
             }, 2000);
         });
@@ -43,42 +42,20 @@ $(document).ready(function () {
             cache: false,
             contentType: false,
             processData: false,
-            success: function (returndata) {
-                swal("提交成功", "注册数据已成功录入", "success");
+            error: function (data) {
+                if (data != null){
+                    swal("插入成功", "教师信息已全部导入", "success")
+                } else {
+                    swal("插入失败", "请仔细检查Excel表是否符合格式", "error")
+                }
             },
-            error: function (returndata) {
-                swal("提交失败", "错误代码：" + returndata, "error");
+            success: function (data) {
+                if (data != null){
+                    swal("插入成功", "教师信息已全部导入", "success")
+                } else {
+                    swal("插入失败", "请仔细检查Excel表是否符合格式", "error")
+                }
             }
         });
-
-        // $.post("/importInfo?type=upload", {workName: "123", teacher: "321"}, function (data) {
-        //     if (data != "101") {
-        //
-        //         setTimeout(function () {
-        //             window.location.href = "/importInfo";
-        //         }, 2000)
-        //
-        //     } else {
-        //     }
-        // });
     }
 });
-
-function doUpload() {
-    var formData = new FormData($("#file_form")[0]);
-    $.ajax({
-        url: '/fileupload',
-        type: 'POST',
-        data: formData,
-        async: false,
-        cache: false,
-        contentType: false,
-        processData: false,
-        success: function (returndata) {
-            alert(returndata);
-        },
-        error: function (returndata) {
-            alert(returndata);
-        }
-    });
-}

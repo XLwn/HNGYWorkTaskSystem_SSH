@@ -4,6 +4,7 @@ import com.xl.dao.MainDao;
 import com.xl.dao.MainDaoImpl;
 import com.xl.entity.THngyImportInfo;
 import com.xl.service.AdminService;
+import com.xl.utils.Config;
 import com.xl.utils.ExcelUtil;
 import jxl.Workbook;
 import jxl.read.biff.BiffException;
@@ -27,6 +28,7 @@ public class AdminController {
 
     @Autowired
     private AdminService adminService;
+
     /***
      * 显示管理员首页信息
      * @param httpSession
@@ -58,10 +60,12 @@ public class AdminController {
      * @return
      */
     @RequestMapping(value = "/downloadTask")
-    public String downloadTask(HttpServletRequest request, HttpServletResponse response, String year, String hyear) throws IOException {
+    public String downloadTask(HttpServletRequest request, HttpServletResponse response, String year, String hyear)
+            throws IOException {
         try {
             String dateStr1 = year + ("上学期".equals(hyear) ? "-02-01" : "-08-01");
-            String dateStr2 = ("上学期".equals(hyear) ? year + "-08-01" : String.valueOf(Integer.parseInt(year) + 1) + "-02-01");
+            String dateStr2 = ("上学期".equals(hyear) ? year + "-08-01" : String.valueOf(Integer.parseInt(year) + 1) +
+                    "-02-01");
             java.sql.Date date1 = java.sql.Date.valueOf(dateStr1);
             java.sql.Date date2 = java.sql.Date.valueOf(dateStr2);
             //输出
@@ -73,7 +77,8 @@ public class AdminController {
 
             MainDao dao = new MainDaoImpl();
             //调用工具类创建excel工作簿
-            ExcelUtil.createWorkbook(dao.QueryPersonalAdminWorkHomepageInformation(date1, date2), keys, columnNames).write(os);
+            ExcelUtil.createWorkbook(dao.QueryPersonalAdminWorkHomepageInformation(date1, date2), keys, columnNames)
+                    .write(os);
             byte[] content = os.toByteArray();
             InputStream is = new ByteArrayInputStream(content);
 
@@ -110,10 +115,12 @@ public class AdminController {
      * @return
      */
     @RequestMapping(value = "/downloadTeacher")
-    public String downloadTeacher(HttpServletRequest request, HttpServletResponse response, String year, String hyear) throws IOException {
+    public String downloadTeacher(HttpServletRequest request, HttpServletResponse response, String year, String
+            hyear) throws IOException {
         try {
             String dateStr1 = year + ("上学期".equals(hyear) ? "-02-01" : "-08-01");
-            String dateStr2 = ("上学期".equals(hyear) ? year + "-08-01" : String.valueOf(Integer.parseInt(year) + 1) + "-02-01");
+            String dateStr2 = ("上学期".equals(hyear) ? year + "-08-01" : String.valueOf(Integer.parseInt(year) + 1) +
+                    "-02-01");
             java.sql.Date date1 = java.sql.Date.valueOf(dateStr1);
             java.sql.Date date2 = java.sql.Date.valueOf(dateStr2);
             //输出
@@ -166,12 +173,13 @@ public class AdminController {
      * @throws IOException
      */
     @RequestMapping("fileupload")
-    public void fileupload(HttpServletRequest request, HttpServletResponse response, String loginName) throws
+    public String fileupload(HttpServletRequest request, HttpServletResponse response, String loginName) throws
             ServletException, IOException {
 //        上传文件的全路径
         String loaclPath = "";
 
-        String path = request.getSession().getServletContext().getRealPath("") + "\\upload\\record\\";
+        File newFile = null;
+        String path = request.getSession().getServletContext().getRealPath("");
         System.out.println(path);
         CommonsMultipartResolver resolver = new CommonsMultipartResolver(request.getSession().getServletContext());
         if (resolver.isMultipart(request)) {
@@ -181,55 +189,31 @@ public class AdminController {
                 MultipartFile file = multipartHttpServletRequest.getFile(it.next());
                 String fileName = file.getOriginalFilename();
                 loaclPath = path + fileName;
-                System.out.println(loaclPath);
-                File newFile = new File(loaclPath);
-                file.transferTo(newFile);
-            }
-        }
-
-        String errMessage = null;
-        boolean flags = false;
-
-        List<THngyImportInfo> Info_Import = new LinkedList<THngyImportInfo>();
-        java.io.File f = new java.io.File(loaclPath);
-        InputStream is = new FileInputStream(f);
-        try {
-            Workbook wb = Workbook.getWorkbook(is);
-            jxl.Sheet sheet = wb.getSheet(0);
-            String centent = null;
-            for (int i = 0; i < sheet.getRows(); i++) {
-                THngyImportInfo info = new THngyImportInfo();
-                for (int j = 0; j < sheet.getColumns(); j++) {
-                    centent = sheet.getCell(j, i).getContents();
-//                    选择插入判断 开始
-                    if (info.getTeacher_name() == null) {
-                        info.setTeacher_name(centent);
-                    } else if (info.getTeacher_room() == null) {
-                        info.setTeacher_room(centent);
-                    } else if (info.getTeacher_mail() == null) {
-                        info.setTeacher_mail(centent);
-                    } else if (info.getTeacher_phone() == null) {
-                        info.setTeacher_phone(centent);
-                    }
-//                    System.out.print(centent + " ");
+                System.out.println("即将删除" + loaclPath);
+                newFile = new File(loaclPath);
+                try {
+                    file.transferTo(newFile);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return null;
                 }
-                Info_Import.add(info);
-//                System.out.println();
             }
-
-            MainDaoImpl mainDao = new MainDaoImpl();
-
-            for (int i = 0; i < Info_Import.size(); i++ ){
-                System.out.print(Info_Import.get(i).getTeacher_name()+" ");
-                System.out.print(Info_Import.get(i).getTeacher_room()+" ");
-                System.out.print(Info_Import.get(i).getTeacher_mail()+" ");
-                System.out.println(Info_Import.get(i).getTeacher_phone()+" ");
-            }
-
-
-        } catch (BiffException e) {
-            e.printStackTrace();
         }
+        if (adminService.importExcelInfo(loaclPath) == Config.Code201){
+            return null;
+        }
+        if (newFile.exists()) {
+            if (newFile.delete()) {
+                System.out.println("Excel表删除成功");
+            } else {
+                System.out.println("Excel表删除失败");
+            }
+
+        } else {
+            System.out.println("警告！Excel表不存在！无法删除！");
+        }
+
+        return Config.Code200;
     }
 
     /***
@@ -242,9 +226,9 @@ public class AdminController {
     @RequestMapping(value = "/importInfo")
     public String importInfo(HttpServletResponse response, HttpServletRequest httpServletRequest) {
 
-        if (httpServletRequest.getParameter("type") != null ){
+        if (httpServletRequest.getParameter("type") != null) {
             String type = httpServletRequest.getParameter("type");
-            if (type.equals("upload")){
+            if (type.equals("upload")) {
 //                String workName = httpServletRequest.getParameter("workName");
 //                String teacher = httpServletRequest.getParameter("teacher");
 //                System.out.println("测试" + workName + " " + teacher);
@@ -257,6 +241,7 @@ public class AdminController {
 
         return "importInfo";
     }
+
     @GetMapping(value = "adminquery")
     public String adminquery() {
         return "adminquery";
