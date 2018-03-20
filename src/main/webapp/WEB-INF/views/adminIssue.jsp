@@ -114,7 +114,7 @@
                                         class="sidebar-nav-mini-hide">发布任务</span></a>
                             </li>
                             <li>
-                                <a id="select" href="/adminquery"><i
+                                <a id="select" href="/adminQuery"><i
                                         class="fa fa-calendar-check-o sidebar-nav-icon"></i><span
                                         class="sidebar-nav-mini-hide">信息查询</span></a>
                             </li>

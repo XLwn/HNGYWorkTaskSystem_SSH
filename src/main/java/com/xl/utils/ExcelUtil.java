@@ -1,17 +1,63 @@
 package com.xl.utils;
 
+import com.xl.entity.THngyTeacherInfo;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.*;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class ExcelUtil {
 
+
+    /**
+     * 批量获取Excel文件中教师信息
+     * @param tablePath 文件在服务器上的路径
+     * @return 教师list
+     */
+    public static List<THngyTeacherInfo> getTeacherInfo(String tablePath){
+        List<THngyTeacherInfo> list = new ArrayList<>();
+        File file = new File(tablePath);
+        try {
+            InputStream is = new FileInputStream(file);
+            jxl.Workbook wb = jxl.Workbook.getWorkbook(is);
+            jxl.Sheet sheet = wb.getSheet(0);
+            String tStr;
+            //行
+            for (int i = 0; i < sheet.getRows(); i++) {
+                THngyTeacherInfo info = new THngyTeacherInfo();
+                //列
+                for (int j = 0; j < sheet.getColumns(); j++) {
+                    tStr = sheet.getCell(j, i).getContents();
+                    if (j == 0) {
+                        info.setTeacherName(tStr);
+                    } else if (j == 1) {
+                        info.setStaffRoomId(Long.valueOf(tStr));
+                    } else if (j == 2) {
+                        info.setTeacherEmail(tStr);
+                    } else if (j == 3) {
+                        info.setTeacherPhone(tStr);
+                    }
+                }
+                info.setTeacherPassword("123456");
+                list.add(info);
+            }
+            is.close();
+            wb.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+
+    }
 
     /**
      * @param list        数据集合

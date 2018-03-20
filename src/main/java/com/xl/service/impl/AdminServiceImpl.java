@@ -9,6 +9,7 @@ import com.xl.repository.AdminRepository;
 import com.xl.repository.MainRepository;
 import com.xl.service.AdminService;
 import com.xl.utils.Config;
+import com.xl.utils.ExcelUtil;
 import com.xl.utils.MainUtil;
 import jxl.Workbook;
 import jxl.read.biff.BiffException;
@@ -174,49 +175,19 @@ public class AdminServiceImpl implements AdminService {
     /***
      * Excel批量注册 教师信息
      *
-     * @param loaclPath
+     * @param filePath
      * @return
      */
     @Override
-    public String importExcelInfo(String loaclPath) {
-        java.io.File f = new java.io.File(loaclPath);
-        try {
-            InputStream is = new FileInputStream(f);
-            Workbook wb = Workbook.getWorkbook(is);
-            jxl.Sheet sheet = wb.getSheet(0);
-            String centent = null;
-            for (int i = 0; i < sheet.getRows(); i++) {
-                THngyTeacherInfo info = new THngyTeacherInfo();
-                for (int j = 0; j < sheet.getColumns(); j++) {
-                    centent = sheet.getCell(j, i).getContents();
-//                    选择插入判断 开始
-                    if (j == 0) {
-                        info.setTeacherName(centent);
-                    } else if (j == 1) {
-                        info.setStaffRoomId(Long.valueOf(centent));
-                    } else if (j == 2) {
-                        info.setTeacherEmail(centent);
-                    } else if (j == 3) {
-                        info.setTeacherPhone(centent);
-                    }
-                }
-                info.setTeacherPassword("123456");
-                System.out.println("信息输出" +info.getTeacherId()+" "+ info.getTeacherName()+" "+info.getStaffRoomId()+" "+info.getTeacherEmail()+" "+info.getTeacherPhone()+" "+info.getTeacherPassword());
-                if (mainRepository.save(info) == -1){
-                    System.out.println("Excel批量信息插入失败");
-                    return Config.Code201;
-                } else {
-                    System.out.println("Excel批量信息插入成功");
-                }
+    public String importExcelInfo(String filePath) {
+        String statusCode = Config.Code201;
+        List<THngyTeacherInfo> list = ExcelUtil.getTeacherInfo(filePath);
+        for (int i = 0; i < list.size(); i++) {
+            if(mainRepository.save(list.get(i)) == -1){
+                statusCode = Config.Code201;
             }
-            is.close();
-            wb.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Config.Code201;
         }
-
-        return Config.Code200;
+        return statusCode;
     }
 }
 

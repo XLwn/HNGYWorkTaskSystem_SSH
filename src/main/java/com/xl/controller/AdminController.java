@@ -2,12 +2,10 @@ package com.xl.controller;
 
 import com.xl.dao.MainDao;
 import com.xl.dao.MainDaoImpl;
-import com.xl.entity.THngyImportInfo;
 import com.xl.service.AdminService;
 import com.xl.utils.Config;
 import com.xl.utils.ExcelUtil;
-import jxl.Workbook;
-import jxl.read.biff.BiffException;
+import com.xl.utils.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -165,85 +163,33 @@ public class AdminController {
      * Excel批量注册
      * NOTE:THngyImportInfo 为教师用户信息实体类，追加字符段需要修改此实体类
      * 并需要在 选择插入判断 处对应修改
-     *
      * @param request
-     * @param response
-     * @param loginName
-     * @throws ServletException
-     * @throws IOException
      */
     @RequestMapping("fileupload")
-    public String fileupload(HttpServletRequest request, HttpServletResponse response, String loginName) throws
-            ServletException, IOException {
-//        上传文件的全路径
-        String loaclPath = "";
-
-        File newFile = null;
-        String path = request.getSession().getServletContext().getRealPath("");
-        System.out.println(path);
-        CommonsMultipartResolver resolver = new CommonsMultipartResolver(request.getSession().getServletContext());
-        if (resolver.isMultipart(request)) {
-            MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) (request);
-            Iterator<String> it = multipartHttpServletRequest.getFileNames();
-            while (it.hasNext()) {
-                MultipartFile file = multipartHttpServletRequest.getFile(it.next());
-                String fileName = file.getOriginalFilename();
-                loaclPath = path + fileName;
-                System.out.println("即将删除" + loaclPath);
-                newFile = new File(loaclPath);
-                try {
-                    file.transferTo(newFile);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    return null;
-                }
-            }
+    public String fileupload(HttpServletRequest request) {
+        String filePath = FileUtil.upload(request,"temp/excel");
+        String statusCode = Config.Code201;
+        if(filePath!=null){
+            statusCode = adminService.importExcelInfo(filePath);
         }
-        if (adminService.importExcelInfo(loaclPath) == Config.Code201){
-            return null;
+        if(!FileUtil.delete(filePath)){
+            System.out.println("删除临时文件失败");
         }
-        if (newFile.exists()) {
-            if (newFile.delete()) {
-                System.out.println("Excel表删除成功");
-            } else {
-                System.out.println("Excel表删除失败");
-            }
-
-        } else {
-            System.out.println("警告！Excel表不存在！无法删除！");
-        }
-
-        return Config.Code200;
+        return statusCode;
     }
 
     /***
      * Excel批量导入页面
-     *
-     * @param response
-     * @param httpServletRequest
      * @return
      */
     @RequestMapping(value = "/importInfo")
-    public String importInfo(HttpServletResponse response, HttpServletRequest httpServletRequest) {
-
-        if (httpServletRequest.getParameter("type") != null) {
-            String type = httpServletRequest.getParameter("type");
-            if (type.equals("upload")) {
-//                String workName = httpServletRequest.getParameter("workName");
-//                String teacher = httpServletRequest.getParameter("teacher");
-//                System.out.println("测试" + workName + " " + teacher);
-
-            }
-        }
-
-
-        httpServletRequest.setAttribute("importInfo", null);
+    public String importInfo() {
 
         return "importInfo";
     }
 
-    @GetMapping(value = "adminquery")
-    public String adminquery() {
-        return "adminquery";
+    @GetMapping(value = "adminQuery")
+    public String adminQuery() {
+        return "adminQuery";
     }
 }

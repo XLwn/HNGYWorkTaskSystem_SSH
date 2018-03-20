@@ -43,8 +43,8 @@ public interface AdminService {
     /***
      * Excel批量注册 教师信息
      *
-     * @param loaclPath
+     * @param filePath
      * @return
      */
-    String importExcelInfo(String loaclPath);
+    String importExcelInfo(String filePath);
 }
