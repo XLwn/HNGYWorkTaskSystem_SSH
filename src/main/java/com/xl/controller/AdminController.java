@@ -3,9 +3,11 @@ package com.xl.controller;
 import com.xl.dao.MainDao;
 import com.xl.dao.MainDaoImpl;
 import com.xl.entity.THngyImportInfo;
+import com.xl.service.AdminService;
 import com.xl.utils.ExcelUtil;
 import jxl.Workbook;
 import jxl.read.biff.BiffException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,11 +20,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.*;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Controller
 public class AdminController {
+
+    @Autowired
+    private AdminService adminService;
     /***
      * 显示管理员首页信息
      * @param httpSession
@@ -39,36 +43,14 @@ public class AdminController {
      * @param httpServletRequest
      * @return
      */
-    @GetMapping(value = "/adminissue")
+    @GetMapping(value = "/adminIssue")
     public String adminissue(HttpServletRequest httpServletRequest) {
-        //获取当前时间
-        String time = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-        int M = Integer.parseInt((String) time.subSequence(5, 7));
-        int Y = Integer.parseInt((String) time.subSequence(0, 4));
-        String dateStr1 = null;
-        String dateStr2 = null;
-        if (M < 2 && M > 8)//下学期
-        {
-            dateStr1 = String.valueOf(Y) + "-08-01";
-            dateStr2 = String.valueOf(Y + 1) + "-02-01";
-        } else//上学期
-        {
-            dateStr1 = String.valueOf(Y) + "-02-01";
-            dateStr2 = String.valueOf(Y) + "-08-01";
-
-        }
-        MainDaoImpl mainDao = new MainDaoImpl();
-        java.sql.Date date1 = java.sql.Date.valueOf(dateStr1);
-        java.sql.Date date2 = java.sql.Date.valueOf(dateStr2);
-        System.out.println(date1 + "\n" + date2);
-        httpServletRequest.setAttribute("allTeacherInfo", mainDao.QueryUserID_Name_WorkCount(date1, date2));
-        List<Map<String, Object>> list = (List<Map<String, Object>>) httpServletRequest.getAttribute("allTeacherInfo");
-
-        return "adminissue";
+        adminService.getTeacherWrokStatus(httpServletRequest);
+        return "adminIssue";
     }
 
     /***
-     * 下载教师详情表
+     * 下载任务详情表
      * @param request
      * @param response
      * @param year 年

@@ -10,8 +10,7 @@ import com.xl.utils.Config;
 import com.xl.utils.MainUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
+import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -107,5 +106,60 @@ public class AdminServiceImpl implements AdminService {
             code = Config.Code200;
         }
         return  code;
+    }
+
+    /***
+     * 获取全部教师当前学期工作状态
+     * 将List放入request中,前台调用
+     * @param req
+     */
+    @Override
+    public void getTeacherWrokStatus(HttpServletRequest req) {
+        //获取当前时间
+        String time = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+        int M = Integer.parseInt((String) time.subSequence(5, 7));
+        int Y = Integer.parseInt((String) time.subSequence(0, 4));
+        String dateStr1 = null;
+        String dateStr2 = null;
+        if (M < 2 && M > 8)//下学期
+        {
+            dateStr1 = String.valueOf(Y) + "-08-01";
+            dateStr2 = String.valueOf(Y + 1) + "-02-01";
+        } else//上学期
+        {
+            dateStr1 = String.valueOf(Y) + "-02-01";
+            dateStr2 = String.valueOf(Y) + "-08-01";
+
+        }
+        java.sql.Date date1 = java.sql.Date.valueOf(dateStr1);
+        java.sql.Date date2 = java.sql.Date.valueOf(dateStr2);
+        System.out.println(date1 + "\n" + date2);
+        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+
+        //查没有任务的
+        String hql = "select teacher.teacherId,teacher.teacherName from THngyTeacherInfo as teacher where teacher.teacherId not in (select link.teacherId from THngyLink as link,THngyWorkTask as work where link.workTaskId=work.workTaskId and work.workTaskTime>=? and work.workTaskTime<=?)";
+        List<Object[]> listTeacher = mainRepository.dateQuery(date1,date2,hql);
+        for (int i = 0; i < listTeacher.size(); ++i) {
+            Object[] object1 = listTeacher.get(i);
+            Map<String, Object> map = new HashMap<>();
+            map.put("teacherId", String.valueOf(object1[0]));
+            map.put("teacherName", String.valueOf(object1[1]));
+            map.put("taskCount", 0);
+            map.put("unfinished", 0);
+            list.add(map);
+        }
+        //查有任务的
+        hql = "select teacher.teacherId,teacher.teacherName,count (*) ,( select count(*) from THngyWorkTask as w,THngyLink as l where l.teacherId = teacher.teacherId and l.workTaskId = w.workTaskId and w.workTaskSchedule = '未完成') from THngyTeacherInfo as teacher,THngyLink as link,THngyWorkTask as work where teacher.teacherId = link.teacherId and  link.workTaskId = work.workTaskId and work.workTaskTime>=? and work.workTaskTime<=? group by teacher.teacherId,teacher.teacherName order by count (work.workTaskId) asc ";
+        List<Object[]> listWork = mainRepository.dateQuery(date1,date2,hql);
+        for (int i = 0; i < listWork.size(); ++i) {
+            Object[] object1 = listWork.get(i);
+            Map<String, Object> map = new HashMap<>();
+            map.put("teacherId", String.valueOf(object1[0]));
+            map.put("teacherName", String.valueOf(object1[1]));
+            map.put("taskCount", object1[2]);
+            map.put("unfinished", object1[3]);
+            list.add(map);
+        }
+        req.setAttribute("allTeacherInfo", list);
     }
 }

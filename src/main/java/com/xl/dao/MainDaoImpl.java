@@ -352,40 +352,7 @@ public class MainDaoImpl implements MainDao {
      */
     @Override
     public List<Map<String, Object>> QueryUserID_Name_WorkCount(Date date1, Date date2) {
-        GetSession g = new GetSession();
-        Session session = g.getSession();
-        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-        String hql = "select teacher.teacherId,teacher.teacherName from THngyTeacherInfo as teacher where teacher.teacherId not in (select link.teacherId from THngyLink as link,THngyWorkTask as work where link.workTaskId=work.workTaskId and work.workTaskTime>=? and work.workTaskTime<=?)";
-        Query query = session.createQuery(hql);
-        query.setParameter(0, date1);
-        query.setParameter(1, date2);
-        List<Object[]> listTeacher = query.list();
-        for (int i = 0; i < listTeacher.size(); ++i) {
-            Object[] object1 = listTeacher.get(i);
-            Map<String, Object> map = new HashMap<>();
-            map.put("teacherId", String.valueOf(object1[0]));
-            map.put("teacherName", String.valueOf(object1[1]));
-            map.put("taskCount", 0);
-            map.put("unfinished", 0);
-            list.add(map);
-        }
-        hql = "select teacher.teacherId,teacher.teacherName,count (*) ,( select count(*) from THngyWorkTask as w,THngyLink as l where l.teacherId = teacher.teacherId and l.workTaskId = w.workTaskId and w.workTaskSchedule = '未完成') from THngyTeacherInfo as teacher,THngyLink as link,THngyWorkTask as work where teacher.teacherId = link.teacherId and  link.workTaskId = work.workTaskId and work.workTaskTime>=? and work.workTaskTime<=? group by teacher.teacherId,teacher.teacherName order by count (work.workTaskId) asc ";
-        query = session.createQuery(hql);
-        query.setParameter(0, date1);
-        query.setParameter(1, date2);
-        List<Object[]> listWork = query.list();
-        for (int i = 0; i < listWork.size(); ++i) {
-            Object[] object1 = listWork.get(i);
-            Map<String, Object> map = new HashMap<>();
-            map.put("teacherId", String.valueOf(object1[0]));
-            map.put("teacherName", String.valueOf(object1[1]));
-            map.put("taskCount", object1[2]);
-            map.put("unfinished", object1[3]);
-            list.add(map);
-        }
-        session.close();
-        g.close();
-        return list;
+        return null;
     }
 
     /***

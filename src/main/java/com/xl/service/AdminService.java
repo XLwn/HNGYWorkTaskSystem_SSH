@@ -1,5 +1,9 @@
 package com.xl.service;
 
+import org.springframework.http.HttpRequest;
+
+import javax.servlet.http.HttpServletRequest;
+
 public interface AdminService {
     /**
      * 以Json形式返回管理员个人信息以及公告
@@ -28,4 +32,11 @@ public interface AdminService {
      * @return 返回状态码200成功，201失败
      */
     String updateNotice(String notice);
+
+
+    /***
+     * 获取全部教师当前学期工作状态
+     * 将List放入request中,前台调用
+     */
+    void getTeacherWrokStatus(HttpServletRequest req);
 }

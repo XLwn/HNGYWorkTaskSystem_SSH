@@ -307,5 +307,5 @@
 </body>
 <!-- jQuery, Bootstrap, jQuery plugins and Custom JS code -->
 <script src="./JS/app.js"></script>
-<script src="./JS/adminissue.js"></script>
+<script src="./JS/adminIssue.js"></script>
 </html>
