@@ -120,6 +120,30 @@ public class MainController {
         }
     }
 
+    /**
+     * 404页面
+     *
+     * @return
+     */
+    @GetMapping(value = "/404")
+    public String Error404(HttpSession session) {
+
+        return "404";
+
+    }
+
+    /**
+     * TEST测试
+     *
+     * @return
+     */
+    @GetMapping(value = "/test")
+    public String testNew(HttpSession session) {
+
+            return "test";
+
+    }
+
     @GetMapping(value = "notLogin")
     public String notLogin() {
         return "notLogin";
