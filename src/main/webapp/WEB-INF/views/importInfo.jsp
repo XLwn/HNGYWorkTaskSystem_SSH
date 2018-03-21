@@ -220,15 +220,6 @@
                                           method="post">
 
                                         <div class="form-group">
-                                            <label class="col-lg-3 control-label">教师姓名：</label>
-
-                                            <div class="col-lg-8">
-                                                <input type="text" class="form-control" value="1232323" name="web_name"
-                                                       disabled
-                                                >
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
                                             <label class="col-lg-3 control-label">文件格式：</label>
 
                                             <div class="col-lg-8">
@@ -250,6 +241,10 @@
                                                 <button id="bt_import"
                                                         class="btn btn-sm btn-primary pull-right m-t-n-xs"
                                                         type="button">保存提交
+                                                </button>
+                                                <button
+                                                        class="btn btn-sm btn-info pull-right m-t-n-xs"
+                                                        data-toggle="modal" data-target="#Help" type="button">提交帮助
                                                 </button>
                                             </div>
                                         </div>
@@ -333,6 +328,36 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+
+                    <div class="modal fade" id="Help" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                        ×
+                                    </button>
+                                    <h4 class="modal-title" id="day_ModalLabel">
+                                        怎么用Excel批量注册教师信息
+                                    </h4>
+                                </div>
+                                <div class="modal-body">
+                                    <strong> Excel表要求文件格式：</strong>.xls<br><br>
+                                    <strong> Excel表名字要求：</strong>无要求<br><br>
+                                    <strong> Excel表大小要求：</strong>无限制<br><br>
+                                    <strong> Excel表内容格式要求：</strong>4 x *  （ 列限制4格 行无限）<br><br>
+                                    每行4列<br>第一列为<strong>教师姓名</strong><br>第二列为教师归属<strong>教研室的ID</strong><br>第三列为<strong>教师邮箱</strong><br>第四列为<strong>教师联系电话</strong>
+                                    <br><strong>教师密码</strong>不需设置，统一默认设置为<strong>123456</strong><br><br>
+                                    <strong>格式符合的Excel表 可直接选择上传</strong><br>
+                                    例子截图如下：<br>
+                                    <img width="95%" src="./images/help_1.png" alt="说明截图">
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                                    </button>
+                                </div>
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal -->
                     </div>
 
                 </div>
