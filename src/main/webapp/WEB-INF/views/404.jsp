@@ -29,7 +29,7 @@
     <div id="text">
         <strong>
             <span></span>
-            <a href="./">请稍后重试...</a>
+            <a href="../">请稍后重试...</a>
         </strong>
     </div>
 </div>

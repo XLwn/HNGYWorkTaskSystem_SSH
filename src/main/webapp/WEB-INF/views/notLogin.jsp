@@ -1,27 +1,76 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: 11098
-  Date: 2017/12/02
-  Time: 23:34
-  To change this template use File | Settings | File Templates.
---%>
+<%@ page import="java.util.regex.Pattern" %>
+<%@ page import="java.util.regex.Matcher" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+    String real_url = null;
+    String url = request.getParameter("tzurl");
+    if (url.equals("/404")) {
+        real_url = null;
+    } else {
+        real_url = url;
+    }
+%>
 <html>
 <head>
     <title>Title</title>
     <!-- jQuery, Bootstrap, jQuery plugins and Custom JS code -->
-    <script src="./JS/jquery-2.2.0.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <style type="text/css">* {
+        padding: 0;
+        margin: 0;
+    }
+
+    .think_default_text {
+        padding: 4px 48px;
+    }
+
+    a {
+        color: #2E5CD5;
+        cursor: pointer;
+        text-decoration: none
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+
+    body {
+        background: #fff;
+        font-family: "Century Gothic", "Microsoft yahei";
+        color: #333;
+        font-size: 18px
+    }
+
+    h1 {
+        font-size: 100px;
+        font-weight: normal;
+        margin-bottom: 12px;
+    }
+
+    p {
+        line-height: 1.6em;
+        font-size: 42px
+    }</style>
 </head>
 <body>
-登录失效，请<a href="/login">重新登录</a>,三秒后自动跳转到登录界面
+<div style="padding: 24px 48px;"><h1>:(</h1>
+    <p> 未登录，正在跳回 登录页</p><span id="tiao" style="font-size:22px;">离跳转还有3秒</span></div>
 </body>
 </html>
 <script>
 
-    $(document).ready(function(){
-        setTimeout(function () {
-            window.location = "/login";
-        }, 3000);
-        //这里实现延迟5秒跳转
+    $(document).ready(function () {
+        var i = 2;
+        setInterval(function () {
+            $('#tiao').html("离跳转还有" + i-- + "秒");
+            if (i == -1) {
+                <% if (real_url == null) {%>
+                window.location = "/login";
+                <% } else { %>
+                window.location = "/login?tzurl=<%= real_url%>";
+                <% } %>
+            }
+        }, 1000);
     });
 </script>
+

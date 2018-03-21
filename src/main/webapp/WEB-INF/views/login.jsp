@@ -6,6 +6,16 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+    String real_url = null;
+    String url = request.getParameter("tzurl");
+    if (url == null) {
+        real_url = null;
+    } else {
+        real_url = url;
+        System.out.println("LOGIN获取到的URL：" + real_url);
+    }
+%>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -111,13 +121,21 @@
                         Ladda_l.stop();
                         if (data == "100") {
                             swal("登录成功", "", "success");
+                            <% if (real_url == null) {%>
                             window.location.href = "/user";
+                            <% } else { %>
+                            window.location.href = "<%= real_url%>";
+                            <% } %>
                         } else if (data == "101") {
                             swal("登录失败", "用户名或密码错误", "error");
                         } else if (data == "103") {
                             swal({title: "欢迎回来！", text: "管理员已登入", imageUrl: "css/admin.png", confirmButtonText: "确定",});
                             setTimeout(function () {
+                                <% if (real_url == null) {%>
                                 window.location.href = "/admin";
+                                <% } else { %>
+                                window.location.href = "<%= real_url%>";
+                                <% } %>
                             }, 2000)
 
                         }

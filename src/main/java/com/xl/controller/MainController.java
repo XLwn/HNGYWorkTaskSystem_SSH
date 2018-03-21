@@ -145,7 +145,7 @@ public class MainController {
     }
 
     @GetMapping(value = "notLogin")
-    public String notLogin() {
+    public String notLogin(HttpServletRequest request) {
         return "notLogin";
     }
 
