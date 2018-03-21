@@ -41,16 +41,24 @@ $(document).ready(function () {
         teacher += $('#select_teacher').val();
         var details = $('#details').val();//任务详情
         var qq = $('#web_qq').val();//发布者qq
-        $.post("/insertIssueTasks", {workName: title, teacher: teacher, workText: details, qq: qq}, function (data) {
-            if(data != "101"){
-
-                swal("发布成功", "任务已成功发布出去", "success");
-                setTimeout(function () {
-                    window.location.href = "/taskInfo?id="+data.split(",")[1];
-                },2000)
-
-            } else {
-                swal("发布失败", "错误代码："+data, "error");
+        $.ajax({
+            url:"/insertIssueTasks",
+            type:"POST",
+            data:{workName: title, teacher: teacher, workText: details, qq: qq},
+            dataType: "json",
+            success:function (data) {
+                if(data.sCode == "200"){
+                    swal("发布成功", "任务已成功发布出去", "success");
+                    setTimeout(function () {
+                        window.location.href = "/taskInfo?id=" + data.taskId;
+                    }, 2000)
+                }
+                else {
+                    swal("发布失败", "错误代码：" + data, "error");
+                }
+            },
+            error:function (data) {
+                swal("发布失败", "服务器抽风:"+data.sCode, "error");
             }
         });
     }

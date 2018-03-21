@@ -28,21 +28,7 @@ public class AjaxController {
     @Autowired
     private MainService mainService;
 
-    /**
-     * 根据id获取任务数据
-     *
-     * @return
-     */
-    @RequestMapping(value = "getTaskInfo", produces = "text/html;charset=UTF-8;")
-    @ResponseBody
-    public String getTaskInfo(String id) {
-        System.out.println(id);
-        MainDao dao = new MainDaoImpl();
-        List<Map<String, Object>> list = dao.QueryTaskInfo(Long.parseLong(id));
-        String json = JSONArray.toJSONString(list);
-        System.out.println(json);
-        return json;
-    }
+
 
     /**
      * 主页数据

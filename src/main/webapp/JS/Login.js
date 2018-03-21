@@ -62,7 +62,7 @@ function getLogin() {
                     swal({title: "欢迎回来！", text: "管理员已登入", imageUrl: "css/admin.png", confirmButtonText: "确定",});
                     setTimeout(function () {
                         window.location.href = "/admin";
-                    }, 1000)
+                    }, 500)
 
                 }
             });

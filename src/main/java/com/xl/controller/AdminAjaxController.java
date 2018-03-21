@@ -62,33 +62,15 @@ public class AdminAjaxController {
     @RequestMapping(value = "/insertIssueTasks")
     @ResponseBody
     public String insertIssueTasks(String workName, String teacher, String workText, String qq) {
-        MainDao dao = new MainDaoImpl();
-        List<Long> listIds = new ArrayList<>();
-        String[] teachers = teacher.split(",");
-        for (int i = 0; i < teachers.length; i++) {
-            Long id = dao.QueryUserIdByName(teachers[i]);
-            System.out.println(id);
-            listIds.add(id);
+        String statusCode = Config.Code201;
+        String taskId = "";
+        if(workName.length()>0 && teacher.length() > 0 && workText.length()>0 && qq.length()>0){
+            taskId = adminService.saveTaskTeacherLinkInfo(workName,teacher,workText,qq);
+            statusCode = Config.Code200;
         }
-        //获取当前时间
-        String time = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-        int M = Integer.parseInt((String) time.subSequence(5, 7));
-
-        THngyWorkTask tHngyWorkTask = new THngyWorkTask();
-        tHngyWorkTask.setWorkTaskTime(java.sql.Date.valueOf(time));
-        tHngyWorkTask.setWorkTaskName(workName);
-        tHngyWorkTask.setWorkTaskText(workText);
-        tHngyWorkTask.setWorkTaskSchedule("未完成");
-        tHngyWorkTask.setQq(qq);
-        if (M < 2 && M > 8)//上学期
-        {
-            tHngyWorkTask.setWorkTaskTerm("上学期");
-        } else//下学期
-        {
-            tHngyWorkTask.setWorkTaskTerm("下学期");
-        }
-
-        return dao.insertIssueTasks(listIds, tHngyWorkTask);
+        String json = "{\"sCode\":\""+statusCode+"\",\"taskId\":\""+taskId+"\"}";
+        System.out.println(json);
+        return json;
     }
 
     /**
@@ -169,5 +151,17 @@ public class AdminAjaxController {
     public String getAdminInfo(HttpSession httpSession) {
         String id = String.valueOf(httpSession.getAttribute("id"));
         return adminService.getAdminHomePageInfo(id);
+    }
+
+    /**
+     * 根据id获取任务数据
+     *
+     * @return
+     */
+    @RequestMapping(value = "getTaskInfo", produces = "text/html;charset=UTF-8;")
+    @ResponseBody
+    public String getTaskInfo(String id) {
+        String json = adminService.getTaskInfoForAdmin(Long.valueOf(id));
+        return json;
     }
 }

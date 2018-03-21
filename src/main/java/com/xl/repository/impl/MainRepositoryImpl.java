@@ -60,12 +60,7 @@ public class MainRepositoryImpl implements MainRepository{
 
     @Override
     public Long save(Object o) {
-        long l = -1;
-        try {
-            l =(long)getSession().save(o);
-        } catch (Exception e){
-            e.printStackTrace();
-        }
+        long l =(long)getSession().save(o);
         return l;
     }
 }

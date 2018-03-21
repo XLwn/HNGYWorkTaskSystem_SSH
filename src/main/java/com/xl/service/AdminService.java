@@ -3,6 +3,8 @@ package com.xl.service;
 import org.springframework.http.HttpRequest;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.Map;
 
 public interface AdminService {
     /**
@@ -47,4 +49,20 @@ public interface AdminService {
      * @return
      */
     String importExcelInfo(String filePath);
+
+    /***
+     * 发布任务
+     * @param workName 任务标题
+     * @param workText 任务详情
+     * @param teacher 管理员指定的多个教师,以","隔开
+     * @param qq 发布任务的管理员的qq
+     * @return
+     */
+    String saveTaskTeacherLinkInfo(String workName, String teacher, String workText, String qq);
+
+    /**
+     * 根据id获取任务数据
+     * @return json数据
+     */
+    String getTaskInfoForAdmin(long id);
 }
