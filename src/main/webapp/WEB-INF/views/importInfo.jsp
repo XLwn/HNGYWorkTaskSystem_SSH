@@ -107,11 +107,11 @@
                                         class="sidebar-nav-mini-hide">管理员中心</span></a>
                             </li>
                             <li>
-                                <a id="plan" href="/adminIssue"><i class="fa fa-users sidebar-nav-icon"></i><span
+                                <a id="plan" href="/adminissue"><i class="fa fa-users sidebar-nav-icon"></i><span
                                         class="sidebar-nav-mini-hide">发布任务</span></a>
                             </li>
                             <li>
-                                <a id="select" href="/adminQuery"><i
+                                <a id="select" href="/adminquery"><i
                                         class="fa fa-calendar-check-o sidebar-nav-icon"></i><span
                                         class="sidebar-nav-mini-hide">信息查询</span></a>
                             </li>

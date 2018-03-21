@@ -10,16 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.*;
-import java.util.*;
 
 @Controller
 public class AdminController {
@@ -43,10 +38,10 @@ public class AdminController {
      * @param httpServletRequest
      * @return
      */
-    @GetMapping(value = "/adminIssue")
+    @GetMapping(value = "/adminissue")
     public String adminissue(HttpServletRequest httpServletRequest) {
         adminService.getTeacherWrokStatus(httpServletRequest);
-        return "adminIssue";
+        return "adminissue";
     }
 
     /***
@@ -188,8 +183,8 @@ public class AdminController {
         return "importInfo";
     }
 
-    @GetMapping(value = "adminQuery")
-    public String adminQuery() {
-        return "adminQuery";
+    @GetMapping(value = "adminquery")
+    public String adminquery() {
+        return "adminquery";
     }
 }

@@ -98,11 +98,11 @@
                                         class="sidebar-nav-mini-hide">管理员中心</span></a>
                             </li>
                             <li>
-                                <a id="adminIssue" href="/adminIssue"><i class="fa fa-users sidebar-nav-icon"></i><span
+                                <a id="adminissue" href="/adminissue"><i class="fa fa-users sidebar-nav-icon"></i><span
                                         class="sidebar-nav-mini-hide">发布任务</span></a>
                             </li>
                             <li>
-                                <a id="help" href="/adminQuery"><i class="fa fa-users sidebar-nav-icon"></i><span
+                                <a id="help" href="/adminquery"><i class="fa fa-users sidebar-nav-icon"></i><span
                                         class="sidebar-nav-mini-hide">信息查询</span></a>
                             </li>
                             <li>
