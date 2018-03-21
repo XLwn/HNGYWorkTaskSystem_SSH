@@ -119,6 +119,11 @@
                                         class="sidebar-nav-mini-hide">信息查询</span></a>
                             </li>
                             <li>
+                                <a id="import" href="/importInfo"><i
+                                        class="fa fa-sign-in sidebar-nav-icon"></i><span
+                                        class="sidebar-nav-mini-hide">批量注册</span></a>
+                            </li>
+                            <li>
                                 <a id="index" href="/loginOut"><i class="fa fa-power-off sidebar-nav-icon"></i><span
                                         class="sidebar-nav-mini-hide">注销登录</span></a>
                             </li>

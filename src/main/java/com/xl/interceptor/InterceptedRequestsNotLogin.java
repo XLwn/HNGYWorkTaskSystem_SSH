@@ -25,8 +25,8 @@ public class InterceptedRequestsNotLogin implements HandlerInterceptor
         Object id = request.getSession().getAttribute("id");
         if (user == null || id == null) {
             System.out.println("尚未登录，调到登录页面");
-            System.out.println("拦截的URL:"+request.getRequestURL()+"\n--------------");
-            response.sendRedirect("/notLogin?tzurl="+request.getRequestURI());
+            System.out.println("拦截的URL:"+request.getServletPath()+"\n--------------");
+            response.sendRedirect("/notLogin?tzurl="+request.getServletPath());
             return false;
         }
 
