@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
+
     String real_url = null;
     String url = request.getParameter("tzurl");
     if (url == null) {

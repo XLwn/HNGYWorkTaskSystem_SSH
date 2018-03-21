@@ -6,6 +6,10 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+  Object user = request.getSession().getAttribute("inputEmail");
+  Object id = request.getSession().getAttribute("id");
+%>
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
   <title>任务分发系统-信息院</title>
