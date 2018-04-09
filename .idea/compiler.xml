@@ -9,8 +9,5 @@
         <module name="HNGYWorkSystem" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="HNGYWorkSystem" target="1.8" />
-    </bytecodeTargetLevel>
   </component>
 </project>
