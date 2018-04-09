@@ -109,7 +109,7 @@ public class AdminAjaxController {
     }
 
     /***
-     * 根据时间查询任务报表
+     * 根据时间查询任务报表a
      * @return
      */
     @RequestMapping(value = "getInfo/recentTaskInfo", produces = "text/html;charset=UTF-8;")
